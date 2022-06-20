@@ -1,36 +1,33 @@
-import PropTypes from "prop-types"
-import s from "./Contact.module.css"
+import { useDispatch, useSelector } from "react-redux";
+import s from "./Contact.module.css";
+import { removeContact } from "../../redux/actions";
 
-function Contact({ handelContactFilter,deleteContact }) {
-    return (
-        <ul  className={s.list}>
-            
-        {handelContactFilter.map(({ name, number, id }) => {
-            return (
-                <li className={s.item} key={id}>
-                    {name}: {number}
-                    <button
-                        className={s.btn}
-                        type="button"
-                        id={id}
-                        onClick={() => deleteContact(id)}>
-                        Delete
-                    </button>
-                </li>
-        )})}
-        </ul>
-    )
-}
-
-Contact.propTypes = {
-    handelContactFilter: PropTypes.arrayOf(
-        PropTypes.shape({
-            name: PropTypes.string.isRequired,
-            number: PropTypes.string.isRequired,
-            id: PropTypes.string.isRequired,
-        })
-    ),
-    deleteContact: PropTypes.func.isRequired,
-}
-
-export default Contact;
+const Contacts = () => {
+  const filter = useSelector((state) => state.contacts.filter).toLowerCase();
+  const items = useSelector((state) => state.contacts.items);
+  const contacts = items.filter(({ name }) =>
+    name.toLowerCase().includes(filter)
+  );
+  const dispatch = useDispatch();
+  return (
+    <ul className={s.list}>
+      {contacts.map((contact) => {
+        return (
+          <li key={contact.id} className={s.item}>
+            {contact.name}: {contact.number}
+            <button
+              key={contact.id}
+              name={contact.name}
+              className={s.btn}
+              type="button"
+              onClick={() => dispatch(removeContact(contact.id))}
+            >
+              Delete
+            </button>
+          </li>
+        );
+      })}
+    </ul>
+  );
+};
+export default Contacts;
