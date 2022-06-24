@@ -1,16 +1,18 @@
 import { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import s from "./Form.module.css";
-import { addContact } from "../../redux/actions";
+import { addContact } from "../../redux/contacts/actions";
+import Notiflix from "notiflix";
 
-const Form = () => {
+const Form = ({ onSubmit }) => {
   const dispatch = useDispatch();
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+  const items = useSelector((state) => state.contacts.items);
 
   const handleChange = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+    const { name, value } = e.currentTarget;
+
     switch (name) {
       case "name":
         setName(value);
@@ -18,15 +20,30 @@ const Form = () => {
       case "number":
         setNumber(value);
         break;
+
       default:
         return;
     }
   };
+
   const handleSubmit = (e) => {
     e.preventDefault();
+
+    if (
+      items
+        .map((items) => items.name.toLowerCase())
+        .includes(name.toLowerCase())
+    ) {
+      return Notiflix.Notify.warning(`${name} is already in contacts`);
+    }
+
     dispatch(addContact(name, number));
+
     reset();
+
+    return Notiflix.Notify.success(`${name} is adde in contacts`);
   };
+
   const reset = () => {
     setName("");
     setNumber("");

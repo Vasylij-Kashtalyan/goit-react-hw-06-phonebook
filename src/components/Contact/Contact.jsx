@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
+import { removeContact } from "../../redux/contacts/actions";
+import { AiOutlineDelete } from "react-icons/ai";
 import s from "./Contact.module.css";
-import { removeContact } from "../../redux/actions";
 
 const Contacts = () => {
   const filter = useSelector((state) => state.contacts.filter).toLowerCase();
@@ -22,6 +23,7 @@ const Contacts = () => {
               type="button"
               onClick={() => dispatch(removeContact(contact.id))}
             >
+              <AiOutlineDelete className={s.ImSearch} />
               Delete
             </button>
           </li>

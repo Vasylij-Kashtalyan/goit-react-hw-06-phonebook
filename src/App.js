@@ -1,16 +1,21 @@
 import Container from "./components/Container";
-import Form from "./components/Form/Form";
-import Contacts from "./components/Contact/Contact";
+import Section from "./components/Section";
+import Contact from "./components/Contact/Contact";
 import Filter from "./components/Filter/Filter";
+import Form from "./components/Form/Form";
 
 const App = () => {
   return (
     <Container>
-      <h2>Phonebook</h2>
-      <Form />
+      <Section title="Phonebok">
+        <Form />
+      </Section>
+
       <Filter />
-      <h2>Contacts</h2>
-      <Contacts />
+
+      <Section title="Contact">
+        <Contact />
+      </Section>
     </Container>
   );
 };
