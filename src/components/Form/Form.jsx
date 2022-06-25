@@ -4,10 +4,11 @@ import s from "./Form.module.css";
 import { addContact } from "../../redux/contacts/actions";
 import Notiflix from "notiflix";
 
-const Form = ({ onSubmit }) => {
-  const dispatch = useDispatch();
+const Form = () => {
   const [name, setName] = useState("");
   const [number, setNumber] = useState("");
+
+  const dispatch = useDispatch();
   const items = useSelector((state) => state.contacts.items);
 
   const handleChange = (e) => {
@@ -31,14 +32,13 @@ const Form = ({ onSubmit }) => {
 
     if (
       items
-        .map((items) => items.name.toLowerCase())
+        .map((contact) => contact.name.toLowerCase())
         .includes(name.toLowerCase())
     ) {
       return Notiflix.Notify.warning(`${name} is already in contacts`);
     }
 
     dispatch(addContact(name, number));
-
     reset();
 
     return Notiflix.Notify.success(`${name} is adde in contacts`);
